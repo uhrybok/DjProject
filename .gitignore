@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# additional
+.vscode/
+djproject.code-workspace
+
 # C extensions
 *.so
 
