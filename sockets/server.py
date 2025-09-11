@@ -21,8 +21,7 @@ while running:
     
         if data.lower() == 'bye':
             break
-
-        if data.lower() == 'stop':
+        elif data.lower() == 'stop':
             running = False
             break
 
