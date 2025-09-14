@@ -13,12 +13,14 @@ try:
     while 1:
         text = input("Enter message (or 'bye' or 'stop'): ")
         sock.sendall(text.encode("utf-8"))
-    
+
         if text.lower() == 'bye' or text.lower() == 'stop':
             break
 
-    sock.close()
 except:
-    print("connection error")    
+    print("error") 
+
+finally:
+    sock.close()
 
 print("--stop client--")

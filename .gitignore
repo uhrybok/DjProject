@@ -6,6 +6,7 @@ __pycache__/
 # additional
 .vscode/
 djproject.code-workspace
+c.bat
 
 # C extensions
 *.so
