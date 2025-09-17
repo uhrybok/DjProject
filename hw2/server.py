@@ -53,12 +53,14 @@ from datetime import datetime
 HOST = ('127.0.0.1', 7007)
 
 OK = b'HTTP/1.1 200 OK\n'
-HEADERS = b"Host: djproject.py\nContent-Type: text/html; charset=utf-8\n\n"
+HEADERS = b'Host: djproject.py\nContent-Type: text/html; charset=utf-8\n\n'
 ERR_404 = b'HTTP/1.1 404 Not Found\n\n'
+ERR_500 = b'HTTP/1.1 500 Internal Server Error\n\n'
+
 USERS_PATH = "hw2/users.json"
 
 def path_type(path):
-    # print(f"path <{path}>")
+    # print(f"path '{path}'")
     first = path.split("/", 1)[0]
 
     if first == "test":
@@ -72,6 +74,17 @@ def path_type(path):
     
     return ""
 
+def send_http(conn, http_status, http_header = None, http_data = None):
+    try:
+        conn.send(http_status)
+        if http_data:
+            conn.send(http_header)
+        if http_data:
+            conn.send(http_data)
+    except:
+        conn.send(ERR_500)
+
+    
 def send_file(conn, path):
     full_path = os.path.join(os.path.dirname(__file__), path)
     if os.path.isdir(full_path) == True:
@@ -79,32 +92,36 @@ def send_file(conn, path):
     else:
         ext =  full_path.split(".")[-1]
         if ext not in ['webp', 'jpg', 'png', 'gif', 'ico', 'txt', 'html', 'json']:
-            conn.send(ERR_404)
+            send_http(conn, ERR_404)
             return None
 
     with open(full_path.lstrip('/'), 'rb') as f:                   
-        conn.send(OK)
-        conn.send(HEADERS)
-        conn.send(f.read())
+        send_http(conn, OK, HEADERS, f.read())
 
 def run_test(path):
     try:
         test_num = int(path.split("/", 2)[1])
-        print(f"- Test #{test_num} launched -")
+        answer = f"- Test #{test_num} launched -"
     except:
-        print(f"- invalid data - \n path: <{path}>")
+        answer = f"- invalid data - \n path: '{path}'"
+    finally:
+        send_http(conn, OK, HEADERS, answer.encode("utf-8"))
 
 def print_message(path):
     try:
         data = path.split("/", 3)
-        print(f"- {datetime.now()} - user message {data[1]} - {data[2]} -")
+        answer = f"- {datetime.now()} - user message: {data[1]} - {data[2]} -"
     except:
-        print(f"- invalid data - \n path: <{path}>")
+        answer = f"- invalid data - \n path: '{path}'"
+    finally:
+        send_http(conn, OK, HEADERS, answer.encode("utf-8"))
 
 def process_http(conn, data):
     header = data.split('\n')[0].split(" ", 2)
     method = header[0]
     path = header[1]    
+
+    answer = None
 
     if method == "GET":
         path = path.lstrip('/')
@@ -117,9 +134,13 @@ def process_http(conn, data):
         elif p_type == "message":
             print_message(path)
         else:
-            print(f"- invalid data - \n path: <{path}>")
+            answer = f"- invalid data - \n path: '{path}'"
     else:
-        print("- method not supported -")    
+        answer = "- method not supported -"    
+
+    if answer:
+        send_http(conn, OK, HEADERS, answer.encode("utf-8"))
+
 
 def check_reg(comm):
     message = "Registration error"
@@ -131,7 +152,7 @@ def check_reg(comm):
             users = []
     
     if any(entry["login"] == comm["login"] for entry in users):
-        message = f"username <{comm["login"]}> is taken"
+        message = f"username '{comm["login"]}' is taken"
     else:
         users.append({
             "login": comm["login"], 
@@ -153,19 +174,19 @@ def check_signin(comm):
             users = []
 
     user = next((u for u in users if u["login"] == comm["login"]), None)
-    
+
     if user:
         if user["password"] == comm["password"]:
             message = f"{datetime.now()} Ueser {comm["login"]} logged in"
         else:    
             message = f"Incorrect password"
     else:
-        message = f"Username <{comm["login"]}> not found"
+        message = f"Username '{comm["login"]}' not found"
     
     return message
 
 def run_command(conn, data):
-    message = f"- invalid data: <{data}> -"
+    message = f"- invalid data: '{data}' -"
 
     try:
         comm = dict(item.strip().split(":", 1) for item in data.split(";"))
@@ -175,6 +196,8 @@ def run_command(conn, data):
             message = check_reg(comm)
         elif comm["command"] == "signin":
             message = check_signin(comm) 
+    except:
+        pass
     finally:
         conn.send(message.encode("utf-8"))
 
@@ -185,11 +208,13 @@ def is_http(data):
         # print(protocol)
         if protocol == "HTTP":
             res = True
+    except:
+        pass
     finally:
         return res
 
 def process_data(conn, data):
-    print(f"client {addr} said <{data}>")
+    # print(f"client {addr} said '{data}'")
 
     if data:
         if is_http(data):
