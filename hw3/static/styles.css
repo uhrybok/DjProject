@@ -22,10 +22,19 @@ body {
     border-color: #666;                 
 }
 
-.weather {
+.flex-v {
     display: flex;          
-    align-items: center;    
+    flex-direction: column;
     gap: 16px;                  
+}
+
+.flex-h {
+    display: flex;          
+    gap: 32px;                  
+}
+
+.center {
+    align-items: center;    
 }
 
 .icon {

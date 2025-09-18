@@ -52,7 +52,7 @@ def prepare_data(data, res):
 def city(ct):
     data = get_weather(ct)
     # print(data)
-    res = {"name": ct.capitalize()}
+    res = {"name": ct.title()}
     prepare_data(data, res)
 
     return res
