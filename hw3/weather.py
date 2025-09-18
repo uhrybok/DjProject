@@ -19,9 +19,7 @@ def temp_c(temp_k):
     temp = temp_k-273.15
     return f"{temp:+.0f} °C"
 
-def prepare_data(data, res):
-    res["temp"] = temp_c(data["main"]["temp"])
-    
+def select_icon(data, res):
     if data["clouds"]["all"] < 25:
         res["icon"] = ICONS["clear"]
         res["icon_alt"] = "clear"
@@ -40,13 +38,21 @@ def prepare_data(data, res):
     if "snow" in data:
         if data["snow"]["1h"] > 0.9:
             res["icon"] = ICONS["snow"]
-            res["icon_alt"] = "snow"
+            res["icon_alt"] = "snow"    
+
+def prepare_data(data, res):
+    if data["cod"] == 200:
+        if data["name"].lower() == res["name"].lower():
+            res["temp"] = temp_c(data["main"]["temp"])
+            select_icon(data, res)
+            return
+    res["temp"] = f"City {res["name"]} not found"
+    
             
 def city(ct):
     data = get_weather(ct)
     # print(data)
     res = {"name": ct.capitalize()}
-    if data["name"].lower() == ct:
-        prepare_data(data, res)
+    prepare_data(data, res)
 
     return res
