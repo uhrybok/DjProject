@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav>
+        <ul class="menu">
+            <li><a href="/">Главная</a></li>        
+            <li><a href="/weather">Погода</a></li>
+            <li><a href="{{ login_url }}">{{ login_menu }}</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h1>Вход</h1>
+        <form action="" method="post">
+            <ul class="form">
+                <li>
+                    <label for="login">Логин</label>
+                    <input type="text" name="login" id="login" placeholder="login" value="{{ login }}">
+                </li>
+                <li>
+                    <label for="password">Пароль</label>
+                    <input type="password" name="password" id="password" placeholder="password" value="{{ password }}">
+                </li>
+
+                <li><input type="submit"></li>
+            </ul>
+            {% if errors %}
+                <p style="color: red;">{{ errors }}</p>
+            {% endif %}
+        </form>
+        <a href="/signup">Регистрация</a>
+    </main>
+</body>
+</html>

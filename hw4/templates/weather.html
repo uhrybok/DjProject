@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask server</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav>
+        <ul class="menu">
+            <li><a href="/">Главная</a></li>        
+            <li><a href="/weather">Погода</a></li>
+            <li><a href="{{ login_url }}">{{ login_menu }}</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h1>Weather</h1>
+        <div class="flex-h">
+            <ul style="list-style-type:none;">
+                <li><a class="btn" href="/weather/london">London</a></li>        
+                <li><a class="btn" href="/weather/minsk">Minsk</a></li>        
+                <li><a class="btn" href="/weather/new%20york">New York</a></li>        
+                <li><a class="btn" href="/weather/stambul">Stambul</a></li>        
+            </ul>
+        </div>
+    </main>
+</body>
+</html>

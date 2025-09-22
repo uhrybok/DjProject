@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask server</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav>
+        <ul class="menu">
+            <li><a href="/">Главная</a></li>        
+            <li><a href="/weather">Погода</a></li>
+            <li><a href="{{ login_url }}">{{ login_menu }}</a></li>
+        </ul>
+    </nav>
+    <main>
+        <h1>Flask server - главная страница</h1>
+        {% if user %}
+            <h2>Привет {{ user.fname }} {{ user.lname }}!</h2>
+        {% else %}
+            <p>Авторизуйтесь для использования сайта</p>
+        {% endif%}
+    </main>
+</body>
+</html>
