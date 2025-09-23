@@ -89,6 +89,9 @@ def check_reg(form):
 
     return res, err
 
+def logout():
+    session['logged_in'] = False
+    
 def is_login():
     return session.get('logged_in')
 

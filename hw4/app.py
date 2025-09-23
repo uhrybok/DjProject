@@ -88,7 +88,7 @@ def sigup_page():
 
 @app.route("/logout/")
 def logout():
-    session['logged_in'] = False
+    session_model.logout()
     return redirect(url_for('login_page'))
 
 @app.route("/weather/")
