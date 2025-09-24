@@ -47,9 +47,10 @@ app.secret_key = "123_надо _использовать_генератор?"
 def inject_login():
     login_menu = "Войти"
     login_url = "/login"
-    user = None
-    if session_model.is_login() == True:
-        user = session_model.current_user()
+
+    user = session_model.current_user()
+
+    if user:
         login_menu = f"Выйти ({user["fname"]})"
         login_url = "/logout"
 
@@ -61,8 +62,6 @@ def inject_login():
 
 @app.route("/")
 def index():
-    # if session_model.is_login() == False:
-        # return redirect(url_for('login_page'))
     return render_template('index.html')
 
 @app.route("/login/", methods=['GET', 'POST'])
@@ -70,7 +69,7 @@ def login_page():
     err = ""
     if request.method == "POST":
         res, err = session_model.check_login(request.form)
-        if  res == True:
+        if  res:
             return redirect(url_for('index'))
     return render_template('login.html', errors = err)
 
@@ -80,7 +79,7 @@ def sigup_page():
     data = None
     if request.method == "POST":
         res, err = session_model.check_reg(request.form)
-        if  res == True:
+        if  res:
             return redirect(url_for('index'))
         else:
             data = request.form
@@ -93,16 +92,20 @@ def logout():
 
 @app.route("/weather/")
 def weather_page():
-    if session_model.is_login() == False:
+    if not session_model.is_login():
         return redirect(url_for('login_page'))
     return render_template('weather.html')
 
 @app.route("/weather/<city>")
 def weather_city(city):
-    if session_model.is_login() == False:
+    if not session_model.is_login():
         return redirect(url_for('login_page'))
     city_weather = weather.city(city)
     return render_template('city.html', data = city_weather)
+
+@app.route("/html")
+def hw5():
+    return render_template('html.html')
 
 # Сработает если ошибка 404 - т.е. любой другой путь который выше не предусмотрен
 @app.errorhandler(404)

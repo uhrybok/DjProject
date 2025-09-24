@@ -1,0 +1,32 @@
+
+/* Табы */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tabs label {
+  cursor: pointer;
+  padding: 12px 24px;
+  background-color: #ccc;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.tabs label:hover {
+  background: #ddd;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+.tab-content {
+  display: none;
+  border-top: 2px solid #aac;
+  padding: 16px;
+}
+
+img.hw5{
+  max-height: 360px;
+}

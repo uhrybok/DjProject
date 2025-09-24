@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask server</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='hw5.css') }}">
+
+    <style>
+        {% for i in range(1, 12) %}#rtab{{ i }}:checked ~ .contents #content{{ i }},
+        {% endfor %}
+        #rtab12:checked ~ .contents #content12 {
+        display: block;
+        }
+
+        {% for i in range(1, 12) %}#rtab{{ i }}:checked ~ .tabs #tab{{ i }},
+        {% endfor %}
+        #rtab12:checked ~ .tabs #tab12 {
+        background-color: #aac;
+        }        
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="menu">
+                <li><a href="/">Главная</a></li>        
+                <li><a href="/weather">Погода</a></li>
+                <li><a href="/html">HTML</a></li>
+                <li><a href="{{ login_url }}">{{ login_menu }}</a></li>
+            </ul>
+        </nav>
+    </header>    
+    <main>
+        <h1>Домашка 5</h1>
+
+        <p>См Таб 5 и Таб 6</p>
+
+        <input type="radio" id="rtab1" name="tab" checked>
+        {% for i in range(2, 13) %}<input type="radio" id="rtab{{ i }}" name="tab">
+        {% endfor %}
+
+        <div class="tabs">
+            {% for i in range(1, 13) %}<label id="tab{{ i }}" for="rtab{{ i }}">Таб {{ i }}</label>
+            {% endfor %}
+        </div>
+
+        <div class="contents">
+            <sectin id="content1" class="tab-content">
+                <img class="hw5" src="{{ url_for('static', filename='images/hw_1.png') }}" alt="ДЗ 1">
+            </sectin>
+
+            <sectin id="content2" class="tab-content">
+                <img class="hw5" src="{{ url_for('static', filename='images/hw_2.png') }}" alt="ДЗ 2">
+            </sectin>
+
+            <sectin id="content3" class="tab-content">
+                <img class="hw5" src="{{ url_for('static', filename='images/hw_3.png') }}" alt="ДЗ 3">
+            </sectin>
+            
+            <sectin id="content4" class="tab-content">
+                <img class="hw5" src="{{ url_for('static', filename='images/hw_4.png') }}" alt="ДЗ 4">
+            </sectin>
+            
+            <sectin id="content5" class="tab-content">
+                <img class="hw5" src="{{ url_for('static', filename='images/hw_5.png') }}" alt="ДЗ 5">
+                
+                <hr width="50%" style="margin: 16px auto 32px 0">
+
+                <style>
+                    #content5 table,
+                    #content5 th,
+                    #content5 td {
+                        border: 1px solid black;
+                        border-collapse: collapse;
+                    }
+
+                    #content5 th,
+                    #content5 td {
+                    padding: 8px 12px;
+                    }
+                </style>
+
+                <table class="hw_5">
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Цвет</th>
+                            <th>Твердость по Моосу</th>
+                            <th>Формула</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Алмаз</td>
+                            <td>Белый</td>
+                            <td style="text-align: center;">10</td>
+                            <td>C</td>
+                        </tr>
+                        <tr>
+                            <td>Рубин</td>
+                            <td>Красный</td>
+                            <td style="text-align: center;">9</td>
+                            <td>Al<sub>2</sub>O<sub>3</sub></td>
+                        </tr>
+                        <tr>
+                            <td>Аметист</td>
+                            <td>Голубой</td>
+                            <td style="text-align: center;">7</td>
+                            <td>SiO<sub>2</sub></td>
+                        </tr>
+                        <tr>
+                            <td>Изумруд</td>
+                            <td>Зеленый</td>
+                            <td style="text-align: center;">8</td>
+                            <td>Be<sub>3</sub>Al<sub>2</sub>(SiO<sub>3</sub>)<sub>6</sub></td>
+                        </tr>
+                        <tr>
+                            <td>Сапфир</td>
+                            <td>Голубой</td>
+                            <td style="text-align: center;">9</td>
+                            <td><sup>Al</sup>2<sup>O</sup>3</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Итого</td>
+                            <td style="text-align: center;">43</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </sectin>
+            
+            <sectin id="content6" class="tab-content">
+                <img class="hw5" src="{{ url_for('static', filename='images/hw_6.png') }}" alt="ДЗ 6">
+
+                <hr width="50%" style="margin: 16px auto 32px 0">
+                <style>
+                    figcaption{
+                        position: absolute;
+                        left: 380px;
+                        bottom: 115px;
+                        background: white;
+                        border: 1px solid black;
+                        font-size: 0.7em;
+                        padding: 3px;
+                    }
+
+                    progress{
+                        height: 1.2em;
+                        border-radius: 1px;
+                        border: 1px solid gray;
+                    }
+                    progress::-webkit-progress-bar {
+                        background: 
+                            linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0) 50%),
+                            linear-gradient(90deg, #c7c7c7 70%, #a7a7a7);
+                    }
+                    progress::-webkit-progress-value {
+                        background: 
+                            linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0) 50%),
+                            linear-gradient(90deg, #a8e0ab 60%, #4caf50);
+                    }
+                </style>
+
+                <p><strong>Карта сокровищ</strong></p>
+                <hr>
+                <figure>
+                    <img class="hw5" src="https://img.freepik.com/premium-vector/map-treasures-paper-parchment_8071-3421.jpg" alt="Карта">
+                    <figcaption>Клад</figcaption>
+                </figure>
+                <label for="level">Пройдено:</label>
+                <progress id="level" value="60" max="100">60%</progress>
+                <hr>
+
+            </sectin>
+            
+            <sectin id="content7" class="tab-content">
+                <img class="hw5" src="{{ url_for('static', filename='images/hw_7.png') }}" alt="ДЗ 7">
+            </sectin>
+            
+            <sectin id="content8" class="tab-content">
+                <img class="hw5" src="{{ url_for('static', filename='images/hw_8.png') }}" alt="ДЗ 8">
+            </sectin>
+            
+            <sectin id="content9" class="tab-content">
+                <img class="hw5" src="{{ url_for('static', filename='images/hw_9.png') }}" alt="ДЗ 9">
+
+            </sectin>
+            
+            <sectin id="content10" class="tab-content">
+                <img class="hw5" src="{{ url_for('static', filename='images/hw_10.png') }}" alt="ДЗ 10">
+            </sectin>
+            
+            <sectin id="content11" class="tab-content">
+                <img class="hw5" src="{{ url_for('static', filename='images/hw_11.png') }}" alt="ДЗ 11">
+            </sectin>
+            
+            <sectin id="content12" class="tab-content">
+                <img class="hw5" src="{{ url_for('static', filename='images/hw_12.png') }}" alt="ДЗ 12">
+            </sectin>
+        </div>
+    </main>
+    <footer>
+        <p>© 2025 Roga & Kopyta Ltd </p>
+    </footer>
+</body>
+</html>

@@ -4,30 +4,28 @@ import json
 
 USERS_PATH = "hw4/users.json"
 
-cur_user = {}
-
-def set_cuss_user(user):
-    global cur_user
-    cur_user["fname"] = user["fname"]
-    cur_user["lname"] = user["lname"]
+def set_session(user):
     session["logged_in"] = True
     session["username"] = user["login"]
 
-def check_login(form):
-    res = False
-    err = None
-
+def load_users():
     with open(USERS_PATH, "r", encoding="utf-8") as j:
         try:
             users = json.load(j)
         except:
             users = []
+    return users
 
+def check_login(form):
+    res = False
+    err = None
+
+    users = load_users()
     user = next((u for u in users if u["login"] == form["login"]), None)
 
     if user:
         if check_password_hash(user["password"], form["password"]):
-            set_cuss_user(user)
+            set_session(user)
             res = True
         else:    
             err = "Неверный пароль или имя пользователя"
@@ -41,11 +39,7 @@ def add_user(immu_form):
 
     form = immu_form.to_dict()
 
-    with open(USERS_PATH, "r", encoding="utf-8") as j:
-        try:
-            users = json.load(j)
-        except:
-            users = []
+    users = load_users()
     
     if any(entry["login"] == form["login"] for entry in users):
         res = False
@@ -76,16 +70,13 @@ def check_reg(form):
         if not value and key in field_names
     }
 
-    # print(form)
-    # print(err)
-
     if err:
         res = False
     elif not add_user(form):
         res = False
         err = { "login": "taken" }
     else:    
-        set_cuss_user(form)
+        set_session(form)
 
     return res, err
 
@@ -93,7 +84,11 @@ def logout():
     session['logged_in'] = False
     
 def is_login():
-    return session.get('logged_in')
+    if 'logged_in' in session: 
+        return session.get('logged_in')
+    return False
 
 def current_user():
-    return cur_user
+    if is_login():
+        users = load_users()
+        return next((u for u in users if u["login"] == session["username"]), None)
