@@ -92,16 +92,16 @@ def logout():
 
 @app.route("/weather/")
 def weather_page():
-    if not session_model.is_login():
-        return redirect(url_for('login_page'))
-    return render_template('weather.html')
+    if session_model.is_login():
+        return render_template('weather.html')
+    return redirect(url_for('login_page'))
 
 @app.route("/weather/<city>")
 def weather_city(city):
-    if not session_model.is_login():
-        return redirect(url_for('login_page'))
-    city_weather = weather.city(city)
-    return render_template('city.html', data = city_weather)
+    if session_model.is_login():
+        city_weather = weather.city(city)
+        return render_template('city.html', data = city_weather)
+    return redirect(url_for('login_page'))
 
 @app.route("/html")
 def hw5():
