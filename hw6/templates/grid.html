@@ -6,7 +6,7 @@
 {% block content %}
         <h1>Домашка 6</h1>
 
-        <div class="grid">
+        <div class="container">
             {% for i in range(1, 13) %}
                 <section id="section{{ i }}" mark="section {{ i }}">
                     <a href="#img{{ i }}"><img class="thumb" src="{{ url_for('static', filename='images/hw_' ~ i ~ '.png') }}" alt="ДЗ {{ i }}"></a>

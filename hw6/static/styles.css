@@ -9,7 +9,8 @@ body{
     min-height: 100vh;     
     margin: 0px;
     font-family: Arial, sans-serif;    
-    color: #444;              
+    color: #444; 
+    perspective: 800px;             
 }
 
 main{
@@ -130,16 +131,6 @@ ul.form input[type="submit"]:hover {
     height: auto;
 }
 
-.full_size:target{
-    display: flex;
-}
-
-.full_size img{
-    max-width: 50%;
-    max-height: 50%;
-    object-fit: contain;
-}
-
 .roboto {
     font-family: "Roboto Slab", serif;
     font-optical-sizing: auto;
@@ -149,7 +140,7 @@ ul.form input[type="submit"]:hover {
 }
 
 
-/* homework 6*/
+/* homework 6 */
 
 img.thumb{
     width: 64px;
@@ -165,14 +156,38 @@ img.thumb:hover{
 }
 
 .full_size{
-    display: none;
+    display: flex;
     position: fixed;
-    z-index: 1000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
     background: rgba(0,0,0,0.7);
     justify-content: center;
     align-items: center;    
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+}
+
+.full_size:target {
+    transform: translateY(0);
+}
+
+.full_size img{
+    max-width: 50%;
+    max-height: 50%;
+    object-fit: contain;
+}
+
+.full_size:target img{
+    animation: appear 0.6s ease 0.3s backwards;
+}
+
+@keyframes appear {
+  0%   { opacity: 0; transform: scale(0.3); }
+  50%  { opacity: 1; transform: scale(1.1); }
+  75%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
 }
 
 header::before,
@@ -194,7 +209,7 @@ header, main, footer, section {
     position: relative;
 }
 
-.grid {
+.container {
     display: grid;
     gap: 8px;
     padding: 4px; 
@@ -202,9 +217,9 @@ header, main, footer, section {
     grid-template-columns: repeat(3, 1fr);
 }
 
-.grid section {
+.container section {
     padding: 24px;
-    background-color: #f1f9ff;
+    background: linear-gradient(135deg, white, #f1f9ff);
     box-sizing: border-box;
     min-width: 0;
     overflow-x: auto;
@@ -222,29 +237,29 @@ header, main, footer, section {
 .expand { display: inline-block; }
 .collapse { display: none; }
 
-.grid section:target {
+.container section:target {
     grid-column: 1 / -1;
     outline: 2px solid #4b8bf4;
     transform: scale(1.01);    
 }
 
-.grid section:target .expand { display: none; }
-.grid section:target .collapse { display: inline-block; }
+.container section:target .expand { display: none; }
+.container section:target .collapse { display: inline-block; }
 
 /*@media (max-width: 1199px) {
-  .grid {
+  .container {
     grid-template-columns: repeat(3, 1fr);
   }
 }*/
 
 @media (max-width: 991px) {
-  .grid {
+  .container {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 767px) {
-  .grid {
+  .container {
     grid-template-columns: 1fr;
   }
 }

@@ -1,8 +1,10 @@
 from flask import session
 from werkzeug.security import generate_password_hash, check_password_hash
 import json
+import os
 
-USERS_PATH = "hw4/users.json"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+USERS_PATH = os.path.join(BASE_DIR, "..", "users.json")
 
 def set_session(user):
     session["logged_in"] = True
