@@ -3,28 +3,28 @@ from main import main
 
 import models.session as session_model
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
 
-app.secret_key = "123_надо _использовать_генератор?"
+    app.secret_key = "123_надо _использовать_генератор?"
 
-@app.context_processor
-def inject_login():
-    login_menu = "Войти"
-    login_url = "/login"
+    @app.context_processor
+    def inject_login():
+        login_menu = "Войти"
+        login_url = "/login"
 
-    user = session_model.current_user()
+        user = session_model.current_user()
 
-    if user:
-        login_menu = f"Выйти ({user["fname"]})"
-        login_url = "/logout"
+        if user:
+            login_menu = f"Выйти ({user["fname"]})"
+            login_url = "/logout"
 
-    return {
-        "login_menu": login_menu,
-        "login_url": login_url,
-        "user": user
-    } 
+        return {
+            "login_menu": login_menu,
+            "login_url": login_url,
+            "user": user
+        } 
 
-app.register_blueprint(main)
+    app.register_blueprint(main)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+    return app
